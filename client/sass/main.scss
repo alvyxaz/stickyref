@@ -1,0 +1,114 @@
+// Core variables and mixins
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+body {
+  background: #434343 url('../img/bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #888888;
+  font-family: 'Open Sans', sans-serif;
+}
+
+$bounds-controller-size: 10px;
+$canvas-element-border-size: 2px;
+
+
+.canvas {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.canvas-element {
+  position: absolute;
+  background: #666;
+
+  &.active {
+    box-shadow: #36cdd1 0 0 20px;
+    border: $canvas-element-border-size dashed #419093;
+    margin-left: -$canvas-element-border-size;
+    margin-top: -$canvas-element-border-size;
+  }
+}
+
+.canvas-image {
+  background-repeat: no-repeat;
+}
+
+.bounds-controller {
+  background: #4DCB54;
+  display: block;
+  width: $bounds-controller-size;
+  height: $bounds-controller-size;
+  margin-left: - ($bounds-controller-size / 2);
+  margin-top: - ($bounds-controller-size / 2);
+  cursor: nwse-resize;
+  position: absolute;
+}
+
+.element-settings {
+  font-size: 1.4em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  list-style: none;
+  padding: 0;
+  background: #444;
+
+  li {
+    display: inline-block;
+    text-align: center;
+  }
+
+  li a {
+    color: #999;
+    text-decoration: none;
+    display: block;
+    padding: 5px;
+  }
+
+  li a:hover {
+    background: #222;
+  }
+
+  li a.active {
+    color: #b8ff7b;
+  }
+
+}
+
+#app-controller {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#navigation-main {
+  background-color: #333333;
+
+  font-size: 1.0em;
+
+  h1 {
+    color: #a8cc51;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin: 0;
+  }
+
+  .nav-item {
+    display: inline-block;
+    padding: 5px;
+  }
+
+}
+
+.btn-save {
+//  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+  @include button-variant(#fff, #59771a, #59771a);
+}
