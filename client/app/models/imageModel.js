@@ -10,18 +10,20 @@ var CanvasElementModel = require('./canvasElementModel');
 var ScaleSettingModel = require('./settings/scaleSettingModel.js');
 var PanSettingModel = require('./settings/panSettingModel.js');
 var RatioLockSettingModel = require('./settings/ratioLockSettingModel.js');
+var BoundsModel = require('./boundsModel.js');
 
-var ImageModel = function (url, bounds) {
+var ImageModel = function (image, bounds) {
   CanvasElementModel.call(this, bounds);
   var self = this;
-  self.elementType = 'image';
-  self.imageUrl = url;
-  self.imageElement = url;
-  self.scale = ko.observable(100);
-  self.isImageLoaded = ko.observable(false);
-  self.isImageBound = ko.observable(true);
 
+  // Properties
+  self.elementType = 'image';
+  self.imageUrl = image.src;
+  self.scale = ko.observable(100);
   self.bgPosition = ko.observable([0,0]);
+
+  self.isImageBound = ko.observable(true);
+  self.imageElement = image;
   self.bgSizeCssValue = ko.observable('initial');
 
   // Adding the settings
@@ -29,15 +31,6 @@ var ImageModel = function (url, bounds) {
   self.ratioLockSettings = new RatioLockSettingModel(self);
   self.settings.push(this.panSettings);
   self.settings.push(this.ratioLockSettings);
-
-  // Getting image information
-  var image = new Image();
-  image.src = self.imageUrl;
-  $(image).load(function () {
-    self.imageElement = image;
-    self.isImageLoaded(true);
-    self.lockRatioWithin(bounds.width(), bounds.height());
-  });
 
 };
 
@@ -49,6 +42,7 @@ ImageModel.prototype.onDomInitialized = function () {
 };
 
 ImageModel.prototype.lockRatioWithin = function (width, height) {
+  console.log("Locking ratio");
   var imageWidth = this.imageElement.width;
   var imageHeight = this.imageElement.height;
 
@@ -72,13 +66,48 @@ ImageModel.prototype.lockRatioWithin = function (width, height) {
   }
 
   this.changeScale(scale*100);
-  this.bounds.setSize(Math.round(imageWidth * scale), Math.round(imageHeight * scale));
   this.bounds.lockRatio(imageWidth/imageHeight);
+  this.bounds.setSize(Math.round(imageWidth * scale), Math.round(imageHeight * scale));
+};
 
+ImageModel.prototype.toJSON = function () {
+  return {
+    elementType: this.elementType,
+    bounds: this.bounds.toJSON(),
+    imageUrl : this.imageUrl,
+    scale : this.scale(),
+    bgPosition: this.bgPosition()
+  };
+};
+
+ImageModel.fromJSON = function (data, callback) {
+  var image = new Image();
+  image.src = data.imageUrl;
+
+  $(image).load(function () {
+    var imageModel = new ImageModel(image,
+        BoundsModel.fromJSON(data.bounds));
+    imageModel.changeScale(data.scale);
+    imageModel.bgPosition(data.bgPosition);
+    callback(imageModel);
+  });
+};
+
+ImageModel.fromUrl = function (url, callback, failedCallback) {
+// Getting image information
+  var image = new Image();
+  image.src = url;
+  console.log("iki cia");
+  $(image).load(function () {
+    console.log("PRAEJO");
+    callback(new ImageModel(image,
+        new BoundsModel(324, 67, 387, 307)
+    ));
+  });
 };
 
 ImageModel.prototype.onMouseWheel = function(event) {
-  this.scaleFromElementPoint(this.lastMousePosition, this.scale() + event.deltaY*25);
+  this.scaleFromElementPoint(this.lastMousePosition, this.scale() + event.deltaY*10);
 };
 
 ImageModel.prototype.scaleFromElementPoint = function (point, newScale) {

@@ -12,6 +12,26 @@ ko.bindingHandlers.canvas = {
     element.onmousemove = function (e) {canvasModel.onMouseMove(e)};
     element.onmouseup = function (e) {canvasModel.onMouseUp(e);};
     element.onmousedown = function (e) {canvasModel.onMouseDown(e);};
+
+    $(element).find('.paste-backdrop').on('paste',function(e) {
+      e.preventDefault();
+      var text = (e.originalEvent || e).clipboardData.getData('text/plain') || prompt('Paste something..');
+      canvasModel.controller.addImage(text);
+    });
+
+  },
+  update: function (element, valueAccessor , allBindings, viewModel, bindingContext) {
+
+  }
+};
+
+ko.bindingHandlers.notification = {
+  init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    var viewModel = bindingContext.$data;
+    $(element).delay(2000).fadeOut('slow', function () {
+      $(this).remove();
+      bindingContext.$parent.removeNotification(viewModel);
+    });
   },
   update: function (element, valueAccessor , allBindings, viewModel, bindingContext) {
 

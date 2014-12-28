@@ -32,7 +32,7 @@ gulp.task('server-close', function() {
 gulp.task('scripts', function () {
     var bundler = browserify({
         cache: {}, packageCache: {}, fullPaths: true,
-        entries: ['./client/app/app.js'],
+        entries: ['./client/app/index.js'],
         debug: true
     });
 

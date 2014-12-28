@@ -5,6 +5,8 @@
 var ko = require('knockout');
 var _ = require('lodash');
 
+var DeleteSettingModel = require('./settings/deleteSettingModel.js');
+
 var CanvasElementModel = function CanvasElementModel(bounds) {
   var self = this;
   self._canvas = undefined;
@@ -21,6 +23,14 @@ var CanvasElementModel = function CanvasElementModel(bounds) {
   self.bounds.addChangeListener(function () {
     self.onBoundsChange();
   });
+
+  self.settings.push(new DeleteSettingModel(self));
+};
+
+CanvasElementModel.prototype.destroy = function () {
+  if (this._canvas) {
+    this._canvas.deleteElement(this);
+  }
 };
 
 CanvasElementModel.prototype.setCanvas = function (canvas) {

@@ -2,6 +2,8 @@
  * Created by Alvys on 2014-12-21.
  */
 
+var $ = require('jquery');
+
 var ImageModel = require('./imageModel.js');
 var BoundsModel = require('./boundsModel.js');
 
@@ -13,13 +15,18 @@ var CanvasController = function (canvas) {
 };
 
 CanvasController.prototype.addImage = function (url) {
-  this.canvas.addImage(new ImageModel(url,
-      new BoundsModel(324, 67, 387, 307)
-  ));
+  var self = this;
+
+  ImageModel.fromUrl(url, function (image) {
+    self.canvas.addImage(image);
+    image.lockRatioWithin(300, 300);
+  });
+
 };
 
-CanvasController.prototype.openNewImageModal = function () {
-  console.log("Opening");
+CanvasController.prototype.openImageResolver = function () {
+  console.log(this.canvas);
+  this.canvas.app.imageResolver.open();
 }
 
 module.exports = CanvasController;

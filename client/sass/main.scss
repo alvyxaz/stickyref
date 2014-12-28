@@ -11,6 +11,11 @@ body {
 $bounds-controller-size: 10px;
 $canvas-element-border-size: 2px;
 
+.btn {
+  @include border-top-radius(0);
+  @include border-bottom-radius(0);
+  font-size: 1em;
+}
 
 .canvas {
   position: absolute;
@@ -23,6 +28,15 @@ $canvas-element-border-size: 2px;
   -moz-user-select: -moz-none;
   -o-user-select: none;
   user-select: none;
+  cursor: default;
+}
+
+.paste-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .canvas-element {
@@ -87,6 +101,19 @@ $canvas-element-border-size: 2px;
   position: absolute;
   top: 0;
   left: 0;
+
+  #canvas-select {
+    background: #555;
+    border: none;
+    color: #C2BE7C;
+  }
+
+  .canvas-controller input {
+    background: #575757;
+    border: none;
+    padding: 3px 5px;
+    color: #9B9B9B;
+  }
 }
 
 #navigation-main {
@@ -104,6 +131,106 @@ $canvas-element-border-size: 2px;
   .nav-item {
     display: inline-block;
     padding: 5px;
+  }
+
+}
+
+#image-resolver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+
+  .backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .da-logo {
+    float: right;
+  }
+
+  .content {
+    position: absolute;
+    width: 700px;
+    top: 20%;
+    left: 50%;
+    margin-left: -350px;
+    background: #303030;
+    padding: 20px 30px;
+  }
+
+  .input {
+    margin: 10px 0;
+    position: relative;
+    font-size:1.2em;
+
+    img {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
+  }
+
+  .buttons {
+    font-size: 1.3em;
+
+    .add-button {
+      @include button-variant(#fff, #6e8839, #6e8839);
+      margin-left: 10px;
+    }
+
+  }
+
+  input {
+    width: 100%;
+    background:#383838;
+    color: #7f7f7f;
+    padding: 10px;
+    border: none;
+  }
+}
+
+#notification-controller {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 0.9em;
+
+  .notifications {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    background: #616B6F;
+    color: #C1C1C2;
+    padding: 3px 5px;
+    margin-top: 5px;
+    max-width: 200px;
+    border-radius: 3px;
+  }
+
+  li.error {
+    background: #EA6262;
+    color: #fff;
+  }
+
+  li.warning {
+    background: #E2D8A3;
+    color: #8a6d3b;
+  }
+
+  li.success {
+    background: #48BB53;
+    color: #FFFFFF;
   }
 
 }

@@ -18,7 +18,6 @@ var ScaleSettingModel = function (canvasElement) {
     lastScale = canvasElement.scale();
     var originalScale = lastScale - lastDelta;
     canvasElement.scale(originalScale + dX);
-    //canvasElement.changeScalePercentage(canvasElement.scale());
     lastDelta = dX;
   }
 

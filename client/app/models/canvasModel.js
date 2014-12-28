@@ -11,33 +11,50 @@ var BoundsModel = require('./boundsModel.js');
 var DraggingEventModel = require('./draggingEventModel.js');
 var CanvasController = require('./canvasController.js');
 
-var CanvasModel = function CanvasModel () {
+var CanvasModel = function CanvasModel (app, canvasId) {
   var self = this;
+  self.app = app;
+  self.id = canvasId;
 
   self.name = ko.observable("Untitled");
-
   self.controller = new CanvasController(self);
 
   self.elements = ko.observableArray([]);
   self._activeElement = undefined;
 
   self.dragging = new DraggingEventModel();
+};
 
-  // Testing
-  //this.addImage(new ImageModel(
-  //    'http://th00.deviantart.net/fs71/PRE/f/2014/346/5/1/commission_for_keitorin__taladria_by_avionetca-d89mr1s.png',
-  //    new BoundsModel(100, 50, 150, 150)
-  //));
-  //
-  //this.addImage(new ImageModel(
-  //    'http://th04.deviantart.net/fs70/PRE/f/2014/344/2/0/2045e167cc8772ef6c7ab9731534a200-d89dozu.jpg',
-  //    new BoundsModel(150, 250, 150, 150)
-  //));
-  //
-  //this.addImage(new ImageModel(
-  //    'http://th04.deviantart.net/fs70/PRE/f/2014/344/2/0/2045e167cc8772ef6c7ab9731534a200-d89dozu.jpg',
-  //    new BoundsModel(324, 67, 387, 307)
-  //));
+CanvasModel.prototype.deleteElement = function (element) {
+  this.elements.remove(element);
+};
+
+CanvasModel.prototype.toJSON = function () {
+  return {
+    name: this.name(),
+    id: this.id,
+    elements: _.map(this.elements(), function (element) {
+      return element.toJSON();
+    })
+  }
+};
+
+CanvasModel.prototype.fromJSON = function (data) {
+  var self = this;
+
+  // Restoring canvas info
+  this.id = data.id;
+  this.name(data.name);
+
+  // Restoring elements
+  _.forEach(data.elements, function (elementData) {
+    if (elementData.elementType === 'image') {
+      // Preparing image elements
+      ImageModel.fromJSON(elementData, function (image) {
+        self.addImage(image);
+      })
+    }
+  });
 };
 
 CanvasModel.prototype.addImage = function addImage(image) {
@@ -139,7 +156,7 @@ CanvasModel.prototype.onMouseDown = function (e) {
       self.activeElement.bounds.update(x, y);
     });
 
-  } else if($element.hasClass('canvas')){
+  } else if($element.is('.canvas, .paste-backdrop') ){
     this.setActiveElement(undefined);
   }
 

@@ -22,11 +22,29 @@ var BoundsModel = function BoundsModel(x, y, width, height) {
   self.width = ko.computed(function () {
     return self.controller.x();
   });
+
   self.height = ko.computed(function () {
     return self.controller.y();
   });
+};
 
+BoundsModel.prototype.toJSON = function () {
+  return {
+    x : this.x(),
+    y : this.y(),
+    width : this.width(),
+    height: this.height(),
+    keepRatio: this.keepRatio(),
+    ratio: this.ratio()
+  };
+};
 
+BoundsModel.fromJSON = function (data) {
+  var bounds = new BoundsModel(data.x, data.y, data.width, data.height);
+
+  bounds.keepRatio(data.keepRatio);
+  bounds.ratio(data.ratio);
+  return bounds;
 };
 
 BoundsModel.prototype.lockRatio = function (ratio) {

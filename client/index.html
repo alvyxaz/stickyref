@@ -22,8 +22,9 @@
         <![endif]-->
 
         <!-- ko if :activeCanvas -->
-        <div class="canvas" data-bind="with: activeCanvas, canvas: activeCanvas()">
-            <div id="canvas-elements" data-bind="foreach: elements">
+        <div class="canvas"data-bind="with: activeCanvas, canvas: activeCanvas()">
+            <div class="paste-backdrop" contenteditable="true" ></div>
+            <div class="canvas-elements" data-bind="foreach: elements">
                 <div class="canvas-element canvas-image" data-bind="canvasElement: 'testas', css: {active: isActive}">
                     <!-- ko if: isActive -->
                     <ul class="element-settings" data-bind="foreach: settings">
@@ -37,7 +38,6 @@
         </div>
         <!-- /ko -->
 
-
         <div id="app-controller" class="">
             <div id="navigation-main">
                 <div id="logo" class="nav-item">
@@ -45,25 +45,54 @@
                 </div>
                 <div  class="nav-item">
                     Canvas:
-                    <select id="canvas-select" data-bind="options:canvases, optionsText : 'name'">
+                    <select id="canvas-select" data-bind="options:canvases, optionsText : 'name', value: activeCanvas">
                     </select>
                     <a href="#" data-bind="click: newCanvas">New Canvas</a>
                 </div>
             </div>
 
             <!-- ko if :activeCanvas -->
-            <div class="canvas-controller" data-bind="with: activeCanvas().controller">
+            <div class="canvas-controller" data-bind="with: activeCanvas">
+                <label>Name</label>: <input type="text" id="name" data-bind="value : name">
                 <button class="btn btn-save">Save</button>
-                <button class="btn btn-default" data-bind="click: openNewImageModal">Add Image</button>
+                <!-- ko with:  controller-->
+                <button class="btn btn-default" data-bind="click: openImageResolver">Add Image</button>
+                <!-- /ko -->
             </div>
             <!-- /ko -->
         </div>
 
-        <div id="image-resolver">
-            <div class="backdrop"></div>
-            <div>
+        <!-- ko if: imageResolver.isVisible -->
+        <div id="image-resolver" data-bind="with: imageResolver">
+            <div class="backdrop" data-bind="click: close"></div>
+            <div class="content">
+                <h2>Adding a new image to canvas</h2>
+                <div class="clearfix">
+                    <div class="da-logo">
+                        <img src="./img/da-logo.png" alt="DA logo"/>
+                    </div>
+                    <p>
+                        Paste url of the image to the field below.
+                        You can also add a deviantart.com link of the peace you like :)
+                    </p>
 
+                </div>
+                <div class="input clearfix">
+                    <input type="text" placeholder="http://" data-bind="value: url" />
+                </div>
+                <div class="buttons text-right">
+                    <a href="#" data-bind="click: close">Cancel</a>
+                    <a href="#" data-bind="click: add" class="btn add-button">Add</a>
+                </div>
             </div>
+        </div>
+
+        <!-- /ko -->
+
+        <div id="notification-controller" data-bind="with: notificationController">
+            <ul class="notifications" data-bind="foreach: notifications">
+                <li data-bind="notification: message, text: message, attr: {class: type}">Something is</li>
+            </ul>
         </div>
 
         <script src="js/plugins.js"></script>
