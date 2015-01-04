@@ -7,9 +7,11 @@ var ElementSettingModel = require('./elementSettingModel.js');
 var PanSettingModel = function (canvasElement) {
   ElementSettingModel.call(this, 'glyphicon-move', canvasElement);
   var self = this;
+  self.title = "Enable panning";
 
   self.tags.push("localDrag");
   self.tagsToDisable.push("localDrag")
+  self.tagsToDisable.push("ratioLock")
 
   var lastDelta = [0, 0];
   var lastPosition = [];

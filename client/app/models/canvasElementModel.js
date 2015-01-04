@@ -100,7 +100,6 @@ CanvasElementModel.prototype.getDragCallback = function () {
 };
 
 CanvasElementModel.prototype.activateSetting = function (setting) {
-  // Disable other settings
   _.forEach(this.settings, function (tempSetting) {
     if (setting !== tempSetting) {
       if(_.intersection(tempSetting.tags, setting.tagsToDisable).length > 0) {

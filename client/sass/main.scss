@@ -6,6 +6,18 @@ body {
   background-size: cover;
   color: #888888;
   font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+}
+
+.logo-image {
+  display: none;
+}
+
+a {
+  color: #AFD551;
+  &:hover {
+    color: #97be53;
+  }
 }
 
 $bounds-controller-size: 10px;
@@ -29,6 +41,33 @@ $canvas-element-border-size: 2px;
   -o-user-select: none;
   user-select: none;
   cursor: default;
+}
+
+#loading-cover {
+  position:absolute;
+  background: #434343 url('../img/bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:99999;
+  text-align: center;
+  color: #ccc;
+  padding-top: 20px;
+
+  h2 {
+    font-weight: bold;
+  }
+
+  .loading-disclaimer {
+
+  }
+}
+
+.fb-like {
+  margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 .paste-backdrop {
@@ -95,6 +134,9 @@ $canvas-element-border-size: 2px;
     color: #b8ff7b;
   }
 
+  .setting-remove {
+    color: #f60;
+  }
 }
 
 #app-controller {
@@ -113,6 +155,28 @@ $canvas-element-border-size: 2px;
     border: none;
     padding: 3px 5px;
     color: #9B9B9B;
+    width: 100px;
+  }
+
+  .canvas-controller {
+    font-size: 0.9em;
+    margin-top: 5px;
+    padding-left: 5px;
+  }
+
+  .btn-canvas {
+    color: #C8DA2C;
+    background: #444;
+    padding: 1px 4px;
+    display: inline-block;
+
+    &:hover {
+      background: #555;
+    }
+
+    &.canvas-remove {
+      color: #C35454;
+    }
   }
 }
 
@@ -197,10 +261,35 @@ $canvas-element-border-size: 2px;
   }
 }
 
-#notification-controller {
+#version {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size:0.8em;
+}
+
+#credits {
   position: absolute;
   bottom: 10px;
-  left: 10px;
+  right: 10px;
+  font-size:0.8em;
+}
+
+#app-info {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 400px;
+  font-size: 0.9em;
+  ul {
+    padding-left: 20px;
+  }
+}
+
+#notification-controller {
+  position: absolute;
+  top: 60px;
+  left: 4px;
   font-size: 0.9em;
 
   .notifications {
@@ -233,6 +322,12 @@ $canvas-element-border-size: 2px;
     color: #FFFFFF;
   }
 
+}
+
+.btn-add-image {
+  //  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+  @include button-variant(#DAEFBA, #728347, #728347);
+  padding: 3px 8px;
 }
 
 .btn-save {

@@ -41,6 +41,13 @@ AppModel.prototype.newCanvas = function () {
   var canvas = new CanvasModel(this, this.generateCanvasId());
   this.addCanvas(canvas);
   this.activeCanvas(canvas);
+  this.notificationController.addSuccess("Canvas added successfully");
+};
+
+AppModel.prototype.deleteCanvas = function () {
+  this.canvases.remove(this.activeCanvas());
+  this.activeCanvas(this.canvases.length > 0 ? this.canvases()[0] : false);
+  this.notificationController.addNormal("Canvas removed successfully");
 };
 
 AppModel.prototype.generateCanvasId = function () {
@@ -69,15 +76,14 @@ AppModel.prototype.load = function () {
   var self = this;
   var data = JSON.parse(localStorage.getItem("stickyref"));
 
-  console.log(data);
-
   if (!data || data === null) {
     // If it's the first time opening the app
+    this.notificationController.addNormal("Preparing for first use");
     this.prepareFirstUse();
     return;
   }
 
-  //try {
+  try {
     // Restore latest id
     this.latestCanvasId = data.latestCanvasId;
 
@@ -98,12 +104,15 @@ AppModel.prototype.load = function () {
     }
     this.activeCanvas(activeCanvas);
 
-  //} catch(err) {
-  //  // If we have failed to load stuff
-  //  // Reset the app
-  //  console.error(err);
-  //  this.prepareFirstUse();
-  //}
+    this.notificationController.addSuccess("Data loaded successfully");
+  } catch(err) {
+    // If we have failed to load stuff
+    // Reset the app
+    this.notificationController.addError("Failed to restore your data.");
+    this.notificationController.addNormal("Resetting everything...");
+    console.error(err);
+    this.prepareFirstUse();
+  }
 
 };
 

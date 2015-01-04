@@ -127,13 +127,13 @@ CanvasModel.prototype.onMouseUp = function (e) {
 
 CanvasModel.prototype.onMouseDown = function (e) {
   var self = this;
-  var $element = $(e.srcElement);
+  var $element = $(e.target || e.srcElement);
 
   if ($element.hasClass("canvas-element")){
     // If we've clicked on the canvas element
     var currentlyActive = this.activeElement;
     var potentialyActive = _.find(this.elements(), function (element){
-      return element.bounds.coversPosition(e.x, e.y);
+      return element.bounds.coversPosition(e.clientX , e.clientY);
     });
 
     // Set element we have clicked on as active

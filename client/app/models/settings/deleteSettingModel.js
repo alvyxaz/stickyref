@@ -5,8 +5,10 @@ var ko = require('knockout');
 var ElementSettingModel = require('./elementSettingModel.js');
 
 var DeleteSettingModel = function (canvasElement) {
-    ElementSettingModel.call(this, 'glyphicon-remove', canvasElement);
+    ElementSettingModel.call(this, 'glyphicon-remove setting-remove', canvasElement);
     var self = this;
+    self.title = "Delete image";
+
 }
 
 DeleteSettingModel.prototype = Object.create(ElementSettingModel.prototype)

@@ -45,4 +45,8 @@ ElementSettingModel.prototype.onActivated = function () {
 ElementSettingModel.prototype.onDeactivated = function () {
 };
 
+ElementSettingModel.prototype.getTitle = function () {
+  return this.title ? this.title : 'Tool';
+};
+
 module.exports = ElementSettingModel;

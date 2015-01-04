@@ -29,8 +29,8 @@ var ImageModel = function (image, bounds) {
   // Adding the settings
   self.panSettings = new PanSettingModel(self);
   self.ratioLockSettings = new RatioLockSettingModel(self);
-  self.settings.push(this.panSettings);
-  self.settings.push(this.ratioLockSettings);
+  self.settings.unshift(this.panSettings);
+  self.settings.unshift(this.ratioLockSettings);
 
 };
 
@@ -42,7 +42,6 @@ ImageModel.prototype.onDomInitialized = function () {
 };
 
 ImageModel.prototype.lockRatioWithin = function (width, height) {
-  console.log("Locking ratio");
   var imageWidth = this.imageElement.width;
   var imageHeight = this.imageElement.height;
 
@@ -97,12 +96,12 @@ ImageModel.fromUrl = function (url, callback, failedCallback) {
 // Getting image information
   var image = new Image();
   image.src = url;
-  console.log("iki cia");
-  $(image).load(function () {
-    console.log("PRAEJO");
+  $(image).load(function ( response, status, xhr) {
     callback(new ImageModel(image,
         new BoundsModel(324, 67, 387, 307)
     ));
+  }).error(function () {
+    failedCallback();
   });
 };
 

@@ -6,36 +6,45 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
+        <title>StickyRef</title>
+        <meta name="description" content="Manage your image references online and with ease!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:image" content="http://stickyref.com/img/logo-img.jpg">
+        <link rel="image_src" href="http://stickyref.com/img/logo-img.jpg"/>
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700,300,400' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+        <img src="./img/logo-img.jpg" alt="logo" class="logo-image" />
         <!--[if lt IE 9]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <!-- ko if :activeCanvas -->
-        <div class="canvas"data-bind="with: activeCanvas, canvas: activeCanvas()">
+        <!-- ko with: activeCanvas -->
+        <div class="canvas" data-bind="canvas: $data">
             <div class="paste-backdrop" contenteditable="true" ></div>
             <div class="canvas-elements" data-bind="foreach: elements">
                 <div class="canvas-element canvas-image" data-bind="canvasElement: 'testas', css: {active: isActive}">
                     <!-- ko if: isActive -->
                     <ul class="element-settings" data-bind="foreach: settings">
-                        <li><a data-bind="attr: {'class' : 'setting-icon glyphicon ' + iconClass}, css: {active : isActive},
+                        <li><a data-bind="attr: {'class' : 'setting-icon glyphicon ' + iconClass, 'title' : getTitle()},
+                                    tooltip: 'top',
+                                    css: {active : isActive},
                                     click: onClick"></a></li>
                     </ul>
-                    <span class="bounds-controller" data-bind="boundsController : bounds.controller"></span>
+                    <span class="bounds-controller" data-bind="boundsController : bounds.controller, tooltip: 'right'" title="Resize image"></span>
                     <!-- /ko -->
                 </div>
             </div>
         </div>
+        <!-- /ko -->
         <!-- /ko -->
 
         <div id="app-controller" class="">
@@ -45,21 +54,44 @@
                 </div>
                 <div  class="nav-item">
                     Canvas:
+                    <!-- ko if: activeCanvas-->
                     <select id="canvas-select" data-bind="options:canvases, optionsText : 'name', value: activeCanvas">
                     </select>
-                    <a href="#" data-bind="click: newCanvas">New Canvas</a>
+                    <!-- /ko -->
+                    <a href="#" data-bind="click: newCanvas, tooltip: 'left'" title="Create a new canvas" class="btn-canvas canvas-add"><span class="glyphicon glyphicon-plus"></span></a>
+                    <!-- ko if: activeCanvas-->
+                    <a href="#" data-bind="click: deleteCanvas, tooltip: 'left'" title="Delete current canvas" class="btn-canvas canvas-remove"><span class="glyphicon glyphicon-remove"></span></a>
+                    <!-- /ko -->
                 </div>
+
             </div>
 
             <!-- ko if :activeCanvas -->
             <div class="canvas-controller" data-bind="with: activeCanvas">
-                <label>Name</label>: <input type="text" id="name" data-bind="value : name">
-                <button class="btn btn-save">Save</button>
+                <label>Canvas name</label>: <input type="text" id="name" data-bind="value : name, valueUpdate: 'afterkeydown'">
                 <!-- ko with:  controller-->
-                <button class="btn btn-default" data-bind="click: openImageResolver">Add Image</button>
+                <button class="btn btn-add-image" data-bind="click: openImageResolver, tooltip: 'top'" title="Add a new image"><span class="glyphicon glyphicon-plus"></span> Image</button>
                 <!-- /ko -->
             </div>
             <!-- /ko -->
+        </div>
+
+        <div id="app-info">
+            <ul>
+                <li>Post your suggestions on <a href="https://www.facebook.com/stickyref">Facebook</a> or <a href="http://alvyxaz.deviantart.com/art/Manage-references-with-StickyRef-504813434" >DeviantArt</a></li>
+                <li>Only latest browsers are supported</li>
+                <li>Data is saved in browser, so it's only accessible by your computer </li>
+                <li>There are many issues that will be fixed over time <i>(if someone uses this application besides me) <a href="http://alvyxaz.deviantart.com/art/Manage-references-with-StickyRef-504813434">Tutorial</a></i></li>
+            </ul>
+            <div class="fb-like" data-href="http://stickyref.com" data-colorscheme="dark" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+        </div>
+
+        <div id="credits">
+            Developed by Alvydas Poškevicius
+        </div>
+
+        <div id="version">
+            Version: <b>1.0.2</b> (2015-01-04)
         </div>
 
         <!-- ko if: imageResolver.isVisible -->
@@ -73,7 +105,7 @@
                     </div>
                     <p>
                         Paste url of the image to the field below.
-                        You can also add a deviantart.com link of the peace you like :)
+                        You can also add a deviantart.com link of the peace you like :).
                     </p>
 
                 </div>
@@ -86,7 +118,6 @@
                 </div>
             </div>
         </div>
-
         <!-- /ko -->
 
         <div id="notification-controller" data-bind="with: notificationController">
@@ -95,17 +126,38 @@
             </ul>
         </div>
 
+
+        <div id="loading-cover">
+            <p><img src="./img/loading.GIF" alt="loading" /></p>
+            <h2>Loading...</h2>
+            <div class="loading-disclaimer">In case it doesn't load for a long time, you might need to <a href="http://browsehappy.com/">upgrade your browser</a>.</div>
+        </div>
+
+        <img src="./img/logo-img.jpg" alt="logo" class="logo-image" />
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/app.js"></script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- FB Stuff -->
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=333756170139632&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='//www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
+            ga('create','UA-32274629-2');ga('send','pageview');
         </script>
     </body>
 </html>

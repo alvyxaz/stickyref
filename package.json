@@ -12,7 +12,7 @@
     ]
   },
   "browserify-shim": {
-    "angular": "global:angular"
+    "jquery": "global:jQuery"
   },
   "author": "",
   "license": "ISC",

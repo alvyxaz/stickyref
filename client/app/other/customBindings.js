@@ -8,12 +8,13 @@ var $ = require('jquery');
 ko.bindingHandlers.canvas = {
   init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     var canvasModel = valueAccessor();
+    var $element = $(element);
 
-    element.onmousemove = function (e) {canvasModel.onMouseMove(e)};
-    element.onmouseup = function (e) {canvasModel.onMouseUp(e);};
-    element.onmousedown = function (e) {canvasModel.onMouseDown(e);};
+    $element.mousemove(function (e) {canvasModel.onMouseMove(e)});
+    $element.mouseup(function (e) {canvasModel.onMouseUp(e)});
+    $element.mousedown(function (e) {canvasModel.onMouseDown(e)});
 
-    $(element).find('.paste-backdrop').on('paste',function(e) {
+    $element.find('.paste-backdrop').on('paste',function(e) {
       e.preventDefault();
       var text = (e.originalEvent || e).clipboardData.getData('text/plain') || prompt('Paste something..');
       canvasModel.controller.addImage(text);
@@ -21,14 +22,13 @@ ko.bindingHandlers.canvas = {
 
   },
   update: function (element, valueAccessor , allBindings, viewModel, bindingContext) {
-
   }
 };
 
 ko.bindingHandlers.notification = {
   init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     var viewModel = bindingContext.$data;
-    $(element).delay(2000).fadeOut('slow', function () {
+    $(element).animate({"margin-left" : "30px"}, 3000, 'linear').fadeOut('slow', function () {
       $(this).remove();
       bindingContext.$parent.removeNotification(viewModel);
     });
@@ -37,6 +37,13 @@ ko.bindingHandlers.notification = {
 
   }
 };
+
+ko.bindingHandlers.tooltip = {
+  init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    $(element).attr('data-toggle', 'tooltip')
+        .attr('data-placement', valueAccessor).tooltip();
+  }
+}
 
 ko.bindingHandlers.canvasElement = {
   init: function (element, valueAccessor , allBindings, viewModel, bindingContext) {
@@ -58,6 +65,7 @@ ko.bindingHandlers.canvasElement = {
 
     viewModel.domElement = element;
     viewModel.onDomInitialized();
+
   },
   update: function (element, valueAccessor , allBindings, viewModel, bindingContext) {
     var viewModel = bindingContext.$data;

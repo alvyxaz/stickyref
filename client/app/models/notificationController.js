@@ -12,15 +12,19 @@ var NotificationController = function () {
 };
 
 NotificationController.prototype.addNormal = function (message) {
-    this.notifications.push(new Notification(message, 'normal'));
+    this.notifications.unshift(new Notification(message, 'normal'));
 };
 
 NotificationController.prototype.addWarning = function (message) {
-    this.notifications.push(new Notification(message, 'warning'));
+    this.notifications.unshift(new Notification(message, 'warning'));
 };
 
 NotificationController.prototype.addError = function (message) {
-    this.notifications.push(new Notification(message, 'error'));
+    this.notifications.unshift(new Notification("Error: " + message, 'error'));
+};
+
+NotificationController.prototype.addSuccess = function (message) {
+    this.notifications.unshift(new Notification(message, 'success'));
 };
 
 NotificationController.prototype.removeNotification = function (notification) {

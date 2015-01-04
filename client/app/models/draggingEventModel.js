@@ -23,13 +23,13 @@ DraggingEventModel.prototype.setup = function ($element, mouseDownEvent, callbac
   this.initialY = parseInt($element.css('top'), 10);
   this.callback = callback;
   this.callbackStop = callbackStop;
-  this.initialPointerX = mouseDownEvent.x;
-  this.initialPointerY = mouseDownEvent.y;
+  this.initialPointerX = mouseDownEvent.clientX;
+  this.initialPointerY = mouseDownEvent.clientY;
 }
 
 DraggingEventModel.prototype.update = function (e) {
-  var xOffset = e.x - this.initialPointerX;
-  var yOffset = e.y - this.initialPointerY;
+  var xOffset = e.clientX - this.initialPointerX;
+  var yOffset = e.clientY - this.initialPointerY;
   if (!this.isDragging) {
     this.isDragging = Math.abs(xOffset) > DRAG_THRESHOLD
                     || Math.abs(yOffset) > DRAG_THRESHOLD;

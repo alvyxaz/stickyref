@@ -11,6 +11,7 @@ var ScaleSettingModel = function (canvasElement) {
   self.tags.push("localDrag");
   self.tagsToDisable.push("localDrag")
 
+
   var lastScale = 0;
   var lastDelta = 0;
 

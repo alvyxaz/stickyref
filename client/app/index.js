@@ -13,4 +13,5 @@ var AppModel = require('./models/appModel.js')
 
 $(document).ready(function () {
   ko.applyBindings(app);
+  $('#loading-cover').remove();
 });
