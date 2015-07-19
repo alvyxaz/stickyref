@@ -46,7 +46,8 @@ AppModel.prototype.newCanvas = function () {
 
 AppModel.prototype.deleteCanvas = function () {
   this.canvases.remove(this.activeCanvas());
-  this.activeCanvas(this.canvases.length > 0 ? this.canvases()[0] : false);
+  this.activeCanvas(this.canvases().length > 0 ? this.canvases()[0] : false);
+  this.activeCanvas(this.canvases().length > 0 ? this.canvases()[0] : false);
   this.notificationController.addNormal("Canvas removed successfully");
 };
 
